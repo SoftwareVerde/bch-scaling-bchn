@@ -880,6 +880,111 @@ public:
     }
 };
 
+/**
+ * IntraNet
+ */
+class CIntraNetParams : public CChainParams {
+public:
+    CIntraNetParams() {
+        strNetworkID = CBaseChainParams::MAIN;
+        consensus.nSubsidyHalvingInterval = 210000;
+        consensus.BIP16Height = 145;
+        consensus.BIP34Height = 145;
+        consensus.BIP34Hash = BlockHash::fromHex("000000007f47b4ef1a99f9a961199a5878852e7695ef07820de4b7fa45bda802");
+        consensus.BIP65Height = 145;
+        consensus.BIP66Height = 145;
+        consensus.CSVHeight = 145;
+        consensus.powLimit = uint256S("00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+        consensus.nPowTargetTimespan = 14 * 24 * 60 * 60;
+        consensus.nPowTargetSpacing = 10 * 60;
+        consensus.fPowAllowMinDifficultyBlocks = false;
+        consensus.fPowNoRetargeting = false;
+        consensus.nASERTHalfLife = 2 * 24 * 60 * 60;
+        consensus.nMinimumChainWork = uint256S("0000000000000000000000000000000000000000000000000000000000000000"); // ChainParamsConstants::MAINNET_MINIMUM_CHAIN_WORK;
+        consensus.defaultAssumeValid = BlockHash::fromHex("000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f"); // ChainParamsConstants::MAINNET_DEFAULT_ASSUME_VALID;
+        consensus.uahfHeight = 144;
+        consensus.daaHeight = 144;
+
+        // November 15, 2018 hard fork
+        consensus.magneticAnomalyHeight = 144;
+
+        // November 15, 2019 protocol upgrade
+        consensus.gravitonHeight = 144;
+
+        // May 15, 2020 protocol upgrade
+        consensus.phononHeight = 144;
+
+        // Nov 15, 2020 protocol upgrade
+        consensus.axionActivationTime = 1231687693;
+
+        // May 15, 2022 12:00:00 UTC protocol upgrade
+        consensus.upgrade8ActivationTime = 2000000000;
+
+        // May 15, 2023 12:00:00 UTC tentative protocol upgrade
+        consensus.upgrade9ActivationTime = 2000000000;
+
+        // Default limit for block size (in bytes)
+        consensus.nDefaultExcessiveBlockSize = 256 * ONE_MEGABYTE;
+
+        // Chain-specific default for mining block size (in bytes) (configurable with -blockmaxsize)
+        consensus.nDefaultGeneratedBlockSize = 256 * ONE_MEGABYTE;
+
+        assert(consensus.nDefaultGeneratedBlockSize <= consensus.nDefaultExcessiveBlockSize);
+
+        // Anchor params: Note that the block after this height *must* also be checkpointed below.
+        consensus.asertAnchorParams = Consensus::Params::ASERTAnchor{
+            144,          // anchor block height
+            0x1d00ffff,   // anchor block nBits
+            1231692104,   // anchor block previous block timestamp
+        };
+
+        /**
+         * The message start string is designed to be unlikely to occur in
+         * normal data. The characters are rarely used upper ASCII, not valid as
+         * UTF-8, and produce a large 32-bit integer with any alignment.
+         */
+        diskMagic[0] = 0xf9;
+        diskMagic[1] = 0xbe;
+        diskMagic[2] = 0xb4;
+        diskMagic[3] = 0xd9;
+        netMagic[0] = 0xe3;
+        netMagic[1] = 0xe1;
+        netMagic[2] = 0xf3;
+        netMagic[3] = 0xe8;
+        nDefaultPort = 8333;
+        nPruneAfterHeight = 100000;
+        m_assumed_blockchain_size = 145;
+        m_assumed_chain_state_size = 5;
+
+        genesis = CreateGenesisBlock(1231006505, 2083236893, 0x1d00ffff, 1, 50 * COIN);
+
+        consensus.hashGenesisBlock = genesis.GetHash();
+
+        vSeeds.clear();
+
+        base58Prefixes[PUBKEY_ADDRESS] = std::vector<uint8_t>(1, 0);
+        base58Prefixes[SCRIPT_ADDRESS] = std::vector<uint8_t>(1, 5);
+        base58Prefixes[SECRET_KEY] = std::vector<uint8_t>(1, 128);
+        base58Prefixes[EXT_PUBLIC_KEY] = {0x04, 0x88, 0xB2, 0x1E};
+        base58Prefixes[EXT_SECRET_KEY] = {0x04, 0x88, 0xAD, 0xE4};
+        cashaddrPrefix = "bitcoincash";
+
+        vFixedSeeds.clear();
+
+        fDefaultConsistencyChecks = false;
+        fRequireStandard = true;
+        m_is_test_chain = false;
+
+        checkpointData = {
+            {
+                // {145, BlockHash::fromHex("")},
+            }
+        };
+
+        chainTxData = ChainTxData{0, 0, 0};
+    }
+};
+
 
 static std::unique_ptr<CChainParams> globalChainParams;
 
@@ -907,6 +1012,10 @@ std::unique_ptr<CChainParams> CreateChainParams(const std::string &chain) {
 
     if (chain == CBaseChainParams::SCALENET) {
         return std::make_unique<CScaleNetParams>();
+    }
+
+    if (chain == CBaseChainParams::INTRANET) {
+        return std::make_unique<CIntraNetParams>();
     }
 
     throw std::runtime_error(

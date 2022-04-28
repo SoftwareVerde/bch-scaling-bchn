@@ -374,11 +374,13 @@ void SetupServerArgs() {
     const auto testnet4BaseParams = CreateBaseChainParams(CBaseChainParams::TESTNET4);
     const auto regtestBaseParams = CreateBaseChainParams(CBaseChainParams::REGTEST);
     const auto scalenetBaseParams = CreateBaseChainParams(CBaseChainParams::SCALENET);
+    const auto intranetBaseParams = CreateBaseChainParams(CBaseChainParams::INTRANET);
     const auto defaultChainParams = CreateChainParams(CBaseChainParams::MAIN);
     const auto testnetChainParams = CreateChainParams(CBaseChainParams::TESTNET);
     const auto testnet4ChainParams = CreateChainParams(CBaseChainParams::TESTNET4);
     const auto regtestChainParams = CreateChainParams(CBaseChainParams::REGTEST);
     const auto scalenetChainParams = CreateChainParams(CBaseChainParams::SCALENET);
+    const auto intranetChainParams = CreateChainParams(CBaseChainParams::INTRANET);
 
     // Hidden Options
     std::vector<std::string> hidden_args = {
@@ -460,11 +462,12 @@ void SetupServerArgs() {
                  ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
     gArgs.AddArg("-excessiveblocksize=<n>",
                  strprintf("Do not accept blocks larger than this limit, in "
-                           "bytes (default: %u, testnet: %u, testnet4: %u, scalenet: %u, regtest: %u)",
+                           "bytes (default: %u, testnet: %u, testnet4: %u, scalenet: %u, intranet: %u, regtest: %u)",
                            defaultChainParams->GetConsensus().nDefaultExcessiveBlockSize,
                            testnetChainParams->GetConsensus().nDefaultExcessiveBlockSize,
                            testnet4ChainParams->GetConsensus().nDefaultExcessiveBlockSize,
                            scalenetChainParams->GetConsensus().nDefaultExcessiveBlockSize,
+                           intranetChainParams->GetConsensus().nDefaultExcessiveBlockSize,
                            regtestChainParams->GetConsensus().nDefaultExcessiveBlockSize),
                  ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
     gArgs.AddArg("-feefilter",
@@ -502,11 +505,12 @@ void SetupServerArgs() {
                  "Imports blocks from external blk000??.dat file on startup",
                  ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
     gArgs.AddArg("-maxmempool=<n>", strprintf("Keep the transaction memory pool below <n> "
-                 "megabytes (default: %u, testnet: %u, testnet4: %u, scalenet: %u)",
+                 "megabytes (default: %u, testnet: %u, testnet4: %u, scalenet: %u, intranet: %u)",
                  DEFAULT_MAX_MEMPOOL_SIZE_PER_MB * defaultChainParams->GetConsensus().nDefaultExcessiveBlockSize / ONE_MEGABYTE,
                  DEFAULT_MAX_MEMPOOL_SIZE_PER_MB * testnetChainParams->GetConsensus().nDefaultExcessiveBlockSize / ONE_MEGABYTE,
                  DEFAULT_MAX_MEMPOOL_SIZE_PER_MB * testnet4ChainParams->GetConsensus().nDefaultExcessiveBlockSize / ONE_MEGABYTE,
-                 DEFAULT_MAX_MEMPOOL_SIZE_PER_MB * scalenetChainParams->GetConsensus().nDefaultExcessiveBlockSize / ONE_MEGABYTE),
+                 DEFAULT_MAX_MEMPOOL_SIZE_PER_MB * scalenetChainParams->GetConsensus().nDefaultExcessiveBlockSize / ONE_MEGABYTE,
+                 DEFAULT_MAX_MEMPOOL_SIZE_PER_MB * intranetChainParams->GetConsensus().nDefaultExcessiveBlockSize / ONE_MEGABYTE),
                  ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
     gArgs.AddArg("-maxorphantx=<n>",
                  strprintf("Keep at most <n> unconnectable transactions in "
@@ -706,11 +710,12 @@ void SetupServerArgs() {
                  ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
     gArgs.AddArg("-port=<port>",
                  strprintf("Listen for connections on <port> (default: %u, "
-                           "testnet: %u, testnet4: %u, scalenet: %u, regtest: %u)",
+                           "testnet: %u, testnet4: %u, scalenet: %u, intranet: %u, regtest: %u)",
                            defaultChainParams->GetDefaultPort(),
                            testnetChainParams->GetDefaultPort(),
                            testnet4ChainParams->GetDefaultPort(),
                            scalenetChainParams->GetDefaultPort(),
+                           intranetChainParams->GetDefaultPort(),
                            regtestChainParams->GetDefaultPort()),
                  ArgsManager::ALLOW_ANY | ArgsManager::NETWORK_ONLY, OptionsCategory::CONNECTION);
     gArgs.AddArg("-proxy=<ip:port>", "Connect through SOCKS5 proxy", ArgsManager::ALLOW_ANY,
@@ -1043,11 +1048,12 @@ void SetupServerArgs() {
 
     gArgs.AddArg("-blockmaxsize=<n>",
                  strprintf("Set maximum block size in bytes (default: %u, testnet: %u, testnet4: %u, scalenet: %u, "
-                           "regtest: %u)",
+                           "intranet: %u, regtest: %u)",
                            defaultChainParams->GetConsensus().nDefaultGeneratedBlockSize,
                            testnetChainParams->GetConsensus().nDefaultGeneratedBlockSize,
                            testnet4ChainParams->GetConsensus().nDefaultGeneratedBlockSize,
                            scalenetChainParams->GetConsensus().nDefaultGeneratedBlockSize,
+                           intranetChainParams->GetConsensus().nDefaultGeneratedBlockSize,
                            regtestChainParams->GetConsensus().nDefaultGeneratedBlockSize),
                  ArgsManager::ALLOW_ANY, OptionsCategory::BLOCK_CREATION);
 
@@ -1119,11 +1125,12 @@ void SetupServerArgs() {
         ArgsManager::ALLOW_ANY, OptionsCategory::RPC);
     gArgs.AddArg("-rpcport=<port>",
                  strprintf("Listen for JSON-RPC connections on <port> "
-                           "(default: %u, testnet: %u, testnet4: %u, scalenet: %u, regtest: %u)",
+                           "(default: %u, testnet: %u, testnet4: %u, scalenet: %u, intranet: %u, regtest: %u)",
                            defaultBaseParams->RPCPort(),
                            testnetBaseParams->RPCPort(),
                            testnet4BaseParams->RPCPort(),
                            scalenetBaseParams->RPCPort(),
+                           intranetBaseParams->RPCPort(),
                            regtestBaseParams->RPCPort()),
                  ArgsManager::ALLOW_ANY | ArgsManager::NETWORK_ONLY, OptionsCategory::RPC);
     gArgs.AddArg("-rpcallowip=<ip>",

@@ -396,6 +396,7 @@ const std::list<SectionInfo> ArgsManager::GetUnrecognizedSections() const {
     static const std::set<std::string> available_sections{
         CBaseChainParams::REGTEST,
         CBaseChainParams::TESTNET, CBaseChainParams::TESTNET4, CBaseChainParams::SCALENET,
+        CBaseChainParams::INTRANET,
         CBaseChainParams::MAIN};
 
     LOCK(cs_args);
@@ -1146,6 +1147,7 @@ std::string ArgsManager::GetChainName() const {
     bool fTestNet = ArgsManagerHelper::GetNetBoolArg(*this, "-testnet");
     bool fTestNet4 = ArgsManagerHelper::GetNetBoolArg(*this, "-testnet4");
     bool fScaleNet = ArgsManagerHelper::GetNetBoolArg(*this, "-scalenet");
+    bool fIntraNet = ArgsManagerHelper::GetNetBoolArg(*this, "-intranet");
 
     if (fTestNet + fTestNet4 + fScaleNet + fRegTest > 1) {
         throw std::runtime_error(
@@ -1162,6 +1164,9 @@ std::string ArgsManager::GetChainName() const {
     }
     if (fScaleNet) {
         return CBaseChainParams::SCALENET;
+    }
+    if (fIntraNet) {
+        return CBaseChainParams::INTRANET;
     }
     return CBaseChainParams::MAIN;
 }
