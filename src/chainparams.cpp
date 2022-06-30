@@ -890,7 +890,7 @@ public:
         consensus.nSubsidyHalvingInterval = 210000;
         consensus.BIP16Height = 145;
         consensus.BIP34Height = 145;
-        consensus.BIP34Hash = BlockHash::fromHex("000000007f47b4ef1a99f9a961199a5878852e7695ef07820de4b7fa45bda802");
+        consensus.BIP34Hash = BlockHash::fromHex("00000000000876235b029c169918719c4a3f848b7f9a60764b0066734c208352");
         consensus.BIP65Height = 145;
         consensus.BIP66Height = 145;
         consensus.CSVHeight = 145;
